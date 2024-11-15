@@ -4,14 +4,28 @@
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="fill">
       <mat-label>First Name</mat-label>
-      <input matInput formControlName="firstName" required>
-     
+      <input matInput 
+      formControlName="firstName"
+       placeholder="ingresa tu nombre"
+       [class]="isValidField('firstName')"
+       required >
+       @if(userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched) {
+        <mat-error>El nombre es requerido</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Last Name</mat-label>
-      <input matInput formControlName="lastName" >
-      
+      <input 
+      matInput 
+      formControlName="lastName"
+      placeholder="apellido"
+      [class]="isValidField('lastName')"
+      required
+      >
+      @if(userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched) {
+        <mat-error>El apellido es requerido</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="fill">

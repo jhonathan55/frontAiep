@@ -2,6 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MaterialModule } from '../../../modules/material/material.module';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-frm-dialog',
@@ -13,7 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './frm-dialog.component.css'
 })
 export class FrmDialogComponent implements OnInit,OnDestroy {
-  
+  readonly dialogRef=inject(MatDialogRef)
   private _fb=inject(FormBuilder)
   private _subscription:Subscription=new Subscription()
   userForm!:FormGroup
@@ -32,9 +33,16 @@ export class FrmDialogComponent implements OnInit,OnDestroy {
     this._subscription.unsubscribe()
   }
   onSubmit(){
+    if(this.userForm.invalid){
+      return
+    }
+    this.dialogRef.close(this.userForm.value)
     
-    console.log('enviado',this.userForm.value);
-    
+  }
+
+  isValidField(field:string):string{
+    const validatedField=this.userForm.get(field)
+    return (!validatedField?.valid && validatedField?.touched)?'is-invalid':''
   }
 
 
